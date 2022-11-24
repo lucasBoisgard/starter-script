@@ -1,6 +1,11 @@
+tell application "Docker"
+    activate
+    delay 10
+
+end tell
+
 tell application "iTerm"
     activate
-
     set W to current window
     if W = missing value then set W to create window with default profile
     tell W's current session
@@ -8,7 +13,17 @@ tell application "iTerm"
         split vertically with default profile
     end tell
     set T to W's current tab
+    write T's session 1 text "docker start redis-constainer"
     write T's session 1 text "cd ~/Lab/ionisxV2/api; clear; yarn run start:dev"
+    delay 10
     write T's session 2 text "cd  ~/Lab/ionisxV2/editor; clear; yarn run dev"
     write T's session 3 text "cd  ~/Lab/ionisxV2/portal; clear; yarn run dev"
+    delay 15
+end tell
+
+tell application "Google Chrome"
+    activate
+    tell front window to make new tab at after (get active tab) with properties {URL:"http://localhost:3000"} -- open a new tab after the current tab
+    tell front window to make new tab at after (get active tab) with properties {URL:"http://localhost:3002"} -- open a new tab after the current tab
+    tell front window to make new tab at after (get active tab) with properties {URL:"http://localhost:3001/graphql"} -- open a new tab after the current tab
 end tell
